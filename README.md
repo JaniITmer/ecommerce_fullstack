@@ -43,4 +43,4 @@ API Docs: https://localhost:7092/scalar/v1
 
 ## Author
 
-Your Name — [LinkedIn](www.linkedin.com/in/itjanosnagy) · [GitHub](https://github.com/JaniITmer)
+János Nagy — [LinkedIn](www.linkedin.com/in/itjanosnagy) · [GitHub](https://github.com/JaniITmer)
