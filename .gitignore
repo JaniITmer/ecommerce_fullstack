@@ -3,6 +3,19 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#user-secrets
+**/secrets.json
+appsettings.Development.json
+
+# Docker
+docker-compose.override.yml
+
+# dotnet
+**/bin/
+**/obj/
+
+
+
 # User-specific files
 *.rsuser
 *.suo
