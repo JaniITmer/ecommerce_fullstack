@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using EcommerceApi.Data;
+using EcommerceApi.Repositories;
+using EcommerceApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
