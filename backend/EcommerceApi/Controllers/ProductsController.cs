@@ -1,5 +1,6 @@
 ﻿using EcommerceApi.DTOs.Product;
 using EcommerceApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
@@ -55,6 +56,7 @@ namespace EcommerceApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create(CreateProductDto dto)
         {
             var product = new EcommerceApi.Models.Product
@@ -72,6 +74,7 @@ namespace EcommerceApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Update(int id, UpdateProductDto dto)
         {
             var product = new EcommerceApi.Models.Product
@@ -90,6 +93,7 @@ namespace EcommerceApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteAsync(id);
