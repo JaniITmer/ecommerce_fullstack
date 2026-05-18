@@ -31,7 +31,9 @@ namespace EcommerceApi.Controllers
                 Price = p.Price,
                 ImageUrl = p.ImageUrl,
                 CategoryName = p.Category?.Name ?? "Uncategorized",
-                InStock = p.Stock > 0
+                InStock = p.Stock > 0,
+                Stock = p.Stock,           
+                CategoryId = p.CategoryId
             });
             return Ok(result);
         }
@@ -50,7 +52,9 @@ namespace EcommerceApi.Controllers
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
                 CategoryName = product.Category?.Name ?? "Uncategorized",
-                InStock = product.Stock > 0
+                InStock = product.Stock > 0,
+                Stock = product.Stock,          
+                CategoryId = product.CategoryId
             };
             return Ok(result);
         }

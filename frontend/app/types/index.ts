@@ -6,6 +6,8 @@ export interface Product {
     imageUrl: string;
     categoryName: string;
     inStock: boolean;
+    stock?: number;
+    categoryId?: number;
 }
 
 export interface Category {

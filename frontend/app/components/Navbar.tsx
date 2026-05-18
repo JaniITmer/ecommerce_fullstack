@@ -37,7 +37,7 @@ export default function Navbar() {
                 Admin
               </Link>
             )}
-            <span className="text-gray-600">Hi, {user.firstName}!</span>
+                        <span className="text-gray-600">Hi, {user.firstName}!</span>
             <button
               onClick={handleLogout}
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
