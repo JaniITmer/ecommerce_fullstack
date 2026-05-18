@@ -54,6 +54,6 @@ export interface AuthResponse {
 export interface User {
     token: string;
     email: string;
-    frstName: string;
+    firstName: string;
     role: string;
 }
