@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import api from '../lib/api';
 import {Product} from '../types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -33,7 +34,17 @@ export default function ProductsPage() {
       <h1 className="text-2xl font-bold mb-6">Products</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {products.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4 shadow">
+          <div key={product.id} className="border rounded-lg overflow-hidden p-4 shadow">
+            {product.imageUrl && 
+            (<div className="relative h-48 w-full">
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                fill
+                className="object-cover"
+                />
+            </div>
+          )}
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-gray-600 text-sm mb-2">{product.categoryName}</p>
             <p className="text-gray-700 text-sm mb-4">{product.description}</p>

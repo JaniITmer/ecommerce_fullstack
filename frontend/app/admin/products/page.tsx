@@ -5,7 +5,8 @@ import {useRouter} from 'next/navigation';
 import api from '../../lib/api';
 import {Product,Category} from '../../types';
 import {useAuthStore} from '../../store/authStore';
-
+import CloudinaryUpload from '../../components/CloudinaryUpload';
+import Image from 'next/image';
 
 
 export default function AdminProductsPage() {
@@ -100,9 +101,6 @@ export default function AdminProductsPage() {
         catch{
             console.error('Failed to save product');
         }
-
-
-
             };
 
     const handleDelete = async (id: number) => {
@@ -117,7 +115,6 @@ export default function AdminProductsPage() {
     };
 
     if (loading) return <div>Loading...</div>;
-
 
 return (
     <div>
@@ -200,13 +197,22 @@ return (
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium mb-1">Image URL</label>
-              <input
-                type="text"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="w-full border rounded px-3 py-2"
-              />
+            <label className="block text-sm font-medium mb-1">Image</label>
+            <div className="flex gap-3 items-center">
+                <CloudinaryUpload onUpload={(url) => setImageUrl(url)} />
+                {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt="Product"
+                  width={64}
+                  height={64}
+                  className="object-cover rounded"
+                />
+              )}
+            </div>
+            {imageUrl && (
+                <p className="text-sm text-gray-500 mt-1 truncate">{imageUrl}</p>
+            )}
             </div>
           </div>
           <div className="flex gap-3 mt-4">
