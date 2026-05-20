@@ -23,6 +23,12 @@ export default function AdminLayout({
         >
           Products
         </Link>
+        <Link
+          href="/admin/categories"
+          className="px-4 py-2 rounded text-gray-300 hover:text-white hover:bg-gray-700"
+        >
+          Categories
+        </Link>
       </div>
       {children}
     </div>
