@@ -12,6 +12,8 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,17 +39,24 @@ export default function ProductsPage() {
     fetchData();
   }, []);
 
-    const filteredProducts = selectedCategoryName
-    ? products.filter((product) => product.categoryName=== selectedCategoryName)
-    : products;
+    const filteredProducts = products
+    .filter((p) =>
+      selectedCategoryName ? p.categoryName === selectedCategoryName : true
+    )
+    .filter((p) =>
+      search
+        ? p.name.toLowerCase().includes(search.toLowerCase()) ||
+          p.description.toLowerCase().includes(search.toLowerCase())
+        : true
+    );
 
     const handleCategoryClick = (categoryName: string | null) => {
-        if (categoryName === null) {
-            router.push('/products');
-        } else {
-            router.push(`/products?category=${categoryName}`);
-        }
-    };
+      if (categoryName === null) {
+          router.push('/products');
+      } else {
+          router.push(`/products?category=${categoryName}`);
+      }
+};
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -55,7 +64,16 @@ export default function ProductsPage() {
    return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Products</h1>
-
+      <div className="relative mb-4">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search products..."
+          className="w-full border rounded-lg px-4 py-2 pl-10"
+        />
+        <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
+      </div>
       <div className="flex gap-2 mb-6 flex-wrap">
         <button
           onClick={() => handleCategoryClick(null)}
