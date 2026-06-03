@@ -6,7 +6,7 @@ import api from '../../lib/api';
 import {Product,Category} from '../../types';
 import {useAuthStore} from '../../store/authStore';
 import CloudinaryUpload from '../../components/CloudinaryUpload';
-import Image from 'next/image';
+
 
 
 export default function AdminProductsPage() {
@@ -201,14 +201,12 @@ return (
             <div className="flex gap-3 items-center">
                 <CloudinaryUpload onUpload={(url) => setImageUrl(url)} />
                 {imageUrl && (
-                <Image
-                  src={imageUrl}
-                  alt="Product"
-                  width={64}
-                  height={64}
-                  className="object-cover rounded"
-                />
-              )}
+              <img
+                src={imageUrl}
+                alt="Product"
+                className="w-16 h-16 object-cover rounded"
+              />
+            )}
             </div>
             {imageUrl && (
                 <p className="text-sm text-gray-500 mt-1 truncate">{imageUrl}</p>

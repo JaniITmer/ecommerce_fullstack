@@ -1,45 +1,43 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
-import {useRouter,useSearchParams} from 'next/navigation';
-
+import { useRouter, useSearchParams } from 'next/navigation';
 import api from '../lib/api';
-import {Product,Category} from '../types';
+import { Product, Category } from '../types';
 import Link from 'next/link';
-import Image from 'next/image';
 
-export default function ProductsPage() {
+
+function ProductsContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedCategoryName = searchParams.get('category');
 
   useEffect(() => {
-    const fetchData= async () => {
-        try {
-            const [productsResponse, categoriesResponse] = await Promise.all([
-                api.get('/products'),
-                api.get('/categories')
-            ]);
-            setProducts(productsResponse.data);
-            setCategories(categoriesResponse.data);
-            
-        }catch{
-            console.error('Failed to fetch products');
-        }finally{
-            setLoading(false);
-        }
+    const fetchData = async () => {
+      try {
+        const [productsRes, categoriesRes] = await Promise.all([
+          api.get<Product[]>('/products'),
+          api.get<Category[]>('/categories'),
+        ]);
+        setProducts(productsRes.data);
+        setCategories(categoriesRes.data);
+      } catch {
+        console.error('Failed to fetch data');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
   }, []);
 
-    const filteredProducts = products
+  const filteredProducts = products
     .filter((p) =>
       selectedCategoryName ? p.categoryName === selectedCategoryName : true
     )
@@ -50,20 +48,20 @@ export default function ProductsPage() {
         : true
     );
 
-    const handleCategoryClick = (categoryName: string | null) => {
-      if (categoryName === null) {
-          router.push('/products');
-      } else {
-          router.push(`/products?category=${categoryName}`);
-      }
-};
-    if (loading) {
-        return <div>Loading...</div>;
+  const handleCategoryClick = (categoryName: string | null) => {
+    if (categoryName === null) {
+      router.push('/products');
+    } else {
+      router.push(`/products?category=${categoryName}`);
     }
+  };
 
-   return (
+  if (loading) return <div>Loading...</div>;
+
+  return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Products</h1>
+
       <div className="relative mb-4">
         <input
           type="text"
@@ -74,6 +72,7 @@ export default function ProductsPage() {
         />
         <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
       </div>
+
       <div className="flex gap-2 mb-6 flex-wrap">
         <button
           onClick={() => handleCategoryClick(null)}
@@ -102,21 +101,20 @@ export default function ProductsPage() {
 
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-500 py-10">
-          No products found in this category!
+          No products found!
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <div key={product.id} className="border rounded-lg overflow-hidden shadow">
               {product.imageUrl && (
-                <div className="relative h-48 w-full">
-                  <Image
+                 <div className="h-48 w-full overflow-hidden">
+                  <img
                     src={product.imageUrl}
                     alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                    className="w-full h-full object-cover"
+                    />
+                  </div>
               )}
               <div className="p-4">
                 <h2 className="text-lg font-semibold">{product.name}</h2>
@@ -142,5 +140,13 @@ export default function ProductsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }

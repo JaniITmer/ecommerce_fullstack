@@ -19,7 +19,8 @@ builder.Services.AddCors(options =>
 {
 options.AddPolicy("AllowFrontend",policy =>
 {
-    policy.WithOrigins("http://localhost:3000")
+    policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:7092", "https://localhost:7092")
+
     .AllowAnyHeader()
     .AllowAnyMethod();
     });
@@ -61,6 +62,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

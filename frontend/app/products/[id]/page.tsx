@@ -5,7 +5,7 @@ import {useParams,useRouter} from 'next/navigation';
 import api from '../../lib/api';
 import {Product} from '../../types';
 import {useAuthStore} from '../../store/authStore';
-import Image from 'next/image';
+
 
 
 export default function ProductDetailPage() {
@@ -70,13 +70,12 @@ export default function ProductDetailPage() {
       <div className="border rounded-lg overflow-hidden shadow">
   {product.imageUrl && (
     <div className="relative h-64 w-full">
-      <Image
-        src={product.imageUrl}
-        alt={product.name}
-        fill
-        className="object-cover"
-      />
-    </div>
+      <img
+      src={product.imageUrl}
+      alt={product.name}
+      className="w-full h-full object-cover"
+    />
+  </div>
   )}
   <div className="p-6">
     <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
