@@ -440,3 +440,16 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+# Next.js
+frontend/.next/
+frontend/out/
+
+# Node modules
+frontend/node_modules/
+
+# Environment variables
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local

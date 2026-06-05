@@ -9,5 +9,8 @@
         public string ImageUrl {  get; set; }= string.Empty;
         public string CategoryName {  get; set; } = string.Empty;
         public bool InStock { get; set; }
+
+        public int Stock { get; set; }
+        public int CategoryId { get; set; }
     }
 }

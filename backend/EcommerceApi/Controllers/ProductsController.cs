@@ -1,5 +1,6 @@
 ﻿using EcommerceApi.DTOs.Product;
 using EcommerceApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
@@ -30,7 +31,9 @@ namespace EcommerceApi.Controllers
                 Price = p.Price,
                 ImageUrl = p.ImageUrl,
                 CategoryName = p.Category?.Name ?? "Uncategorized",
-                InStock = p.Stock > 0
+                InStock = p.Stock > 0,
+                Stock = p.Stock,           
+                CategoryId = p.CategoryId
             });
             return Ok(result);
         }
@@ -49,12 +52,15 @@ namespace EcommerceApi.Controllers
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
                 CategoryName = product.Category?.Name ?? "Uncategorized",
-                InStock = product.Stock > 0
+                InStock = product.Stock > 0,
+                Stock = product.Stock,          
+                CategoryId = product.CategoryId
             };
             return Ok(result);
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create(CreateProductDto dto)
         {
             var product = new EcommerceApi.Models.Product
@@ -72,6 +78,7 @@ namespace EcommerceApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Update(int id, UpdateProductDto dto)
         {
             var product = new EcommerceApi.Models.Product
@@ -90,6 +97,7 @@ namespace EcommerceApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteAsync(id);

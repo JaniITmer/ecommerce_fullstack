@@ -11,5 +11,6 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<CartItem> Carts { get; set; } =new List<CartItem>();
     }
 }
