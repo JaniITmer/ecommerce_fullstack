@@ -110,6 +110,179 @@ docker-compose up --build
     │       └── types/           # TypeScript types
     ├── docker-compose.yml
     └── .env.example
+
+## 📡 API Endpoints
+
+### 🔐 Auth
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/register` | Register new user | ❌ |
+| POST | `/api/auth/login` | Login and get JWT token | ❌ |
+
+**Register example:**
+```json
+POST /api/auth/register
+{
+  "firstName": "János",
+  "lastName": "Nagy",
+  "email": "janos@email.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "email": "janos@email.com",
+  "firstName": "János",
+  "role": "Customer"
+}
+```
+
+---
+
+### 🛍️ Products
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/products` | Get all products | ❌ |
+| GET | `/api/products/{id}` | Get product by ID | ❌ |
+| POST | `/api/products` | Create product | 🔒 Admin |
+| PUT | `/api/products/{id}` | Update product | 🔒 Admin |
+| DELETE | `/api/products/{id}` | Delete product | 🔒 Admin |
+
+**Get all products response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Samsung TV",
+    "description": "TV with Android",
+    "price": 200000,
+    "imageUrl": "https://res.cloudinary.com/...",
+    "categoryName": "Electronics",
+    "inStock": true
+  }
+]
+```
+
+**Create product example:**
+```json
+POST /api/products
+Authorization: Bearer {token}
+{
+  "name": "Samsung TV",
+  "description": "TV with Android",
+  "price": 200000,
+  "stock": 10,
+  "imageUrl": "https://res.cloudinary.com/...",
+  "categoryId": 1
+}
+```
+
+---
+
+### 📁 Categories
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/categories` | Get all categories | ❌ |
+| GET | `/api/categories/{id}` | Get category by ID | ❌ |
+| POST | `/api/categories` | Create category | 🔒 Admin |
+| PUT | `/api/categories/{id}` | Update category | 🔒 Admin |
+| DELETE | `/api/categories/{id}` | Delete category | 🔒 Admin |
+
+**Get all categories response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Electronics",
+    "description": "Electronic products",
+    "productCount": 5
+  }
+]
+```
+
+---
+
+### 🛒 Cart
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/cart` | Get current user cart | 🔒 Customer |
+| POST | `/api/cart` | Add item to cart | 🔒 Customer |
+| PUT | `/api/cart/{cartItemId}` | Update item quantity | 🔒 Customer |
+| DELETE | `/api/cart/{cartItemId}` | Remove item from cart | 🔒 Customer |
+| DELETE | `/api/cart/clear` | Clear cart | 🔒 Customer |
+
+**Add to cart example:**
+```json
+POST /api/cart
+Authorization: Bearer {token}
+{
+  "productId": 1,
+  "quantity": 2
+}
+```
+
+**Cart response:**
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "productId": 1,
+      "productName": "Samsung TV",
+      "productPrice": 200000,
+      "quantity": 2,
+      "totalPrice": 400000
+    }
+  ],
+  "totalAmount": 400000
+}
+```
+
+---
+
+### 📦 Orders
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | `/api/orders` | Get my orders | 🔒 Customer |
+| GET | `/api/orders/{id}` | Get order by ID | 🔒 Customer |
+| POST | `/api/orders` | Place order from cart | 🔒 Customer |
+| GET | `/api/orders/all` | Get all orders | 🔒 Admin |
+| PUT | `/api/orders/{id}/status` | Update order status | 🔒 Admin |
+
+**Place order response:**
+```json
+{
+  "id": 1,
+  "orderDate": "2026-06-03T10:00:00Z",
+  "status": "Pending",
+  "totalAmount": 400000,
+  "items": [
+    {
+      "productName": "Samsung TV",
+      "unitPrice": 200000,
+      "quantity": 2,
+      "totalPrice": 400000
+    }
+  ]
+}
+```
+
+**Update order status example:**
+```json
+PUT /api/orders/1/status
+Authorization: Bearer {token}
+{
+  "status": "Shipped"
+}
+```
+
+**Order statuses:**
+```
+Pending → Processing → Shipped → Delivered
+```
 MVP Complete
 ## 🚧 Future Improvements
 
