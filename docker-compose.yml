@@ -27,9 +27,7 @@ services:
       - ecommerce_network
 
   api:
-    build:
-      context: ./backend/EcommerceApi
-      dockerfile: Dockerfile
+    image: janihu/ecommerce-api:latest
     container_name: ecommerce_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -46,12 +44,7 @@ services:
       - ecommerce_network
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_API_URL=http://localhost:8080/api
-        - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+    image: janihu/ecommerce-frontend:latest
     container_name: ecommerce_frontend
     environment:
       - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
